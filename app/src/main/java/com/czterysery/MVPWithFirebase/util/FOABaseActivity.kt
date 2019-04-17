@@ -104,7 +104,7 @@ abstract class FOABaseActivity : AppCompatActivity(), FragmentManager.OnBackStac
             android.R.id.home -> {popFragmentBackStack(); return true}
             R.id.github_action -> {
                 val action = Intent(Intent.ACTION_VIEW)
-                action.data = Uri.parse("")
+                action.data = Uri.parse("https://github.com/tmaxxdd/MVPWithFirebase")
                 startActivity(action)
             }
         }
