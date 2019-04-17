@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
+    <dimen name="component_margin">16dp</dimen>
+    <dimen name="card_headline_text_size">21sp</dimen>
+    <dimen name="body_text_size">15sp</dimen>
+</resources>
