@@ -97,11 +97,13 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     override fun shouldShowPlaceholderText() {
+        /*
         if (topics.isEmpty()){
             textView.visibility = View.VISIBLE
         }else{
             textView.visibility = View.GONE
         }
+        */
     }
 
     private fun getTopics(ref: String) {

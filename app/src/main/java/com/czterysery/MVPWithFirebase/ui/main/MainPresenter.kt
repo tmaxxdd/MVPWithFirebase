@@ -22,7 +22,6 @@ class MainPresenter(private val mainView: MainActivity): MainPresenterContract {
         mainView.setSupportActionBar(toolbar)
         mainView.supportActionBar?.apply {
             //Adjust toolbar here
-            title = mainView.resources.getString(R.string.label)
         }
     }
 
@@ -73,8 +72,7 @@ class MainPresenter(private val mainView: MainActivity): MainPresenterContract {
             bottomNav.visibility = View.GONE
     }
 
-    private fun <T: Fragment> showFragmentAndReference(
-            fragmentClass: Class<T>, ref: String): Boolean {
+    private fun <T: Fragment> showFragmentAndReference(fragmentClass: Class<T>, ref: String): Boolean {
         val bundle = Bundle()
         bundle.putString(Constants.BUNDLE_TOPIC, ref)
         mainView.showFragment(fragmentClass, bundle)
