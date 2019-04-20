@@ -14,8 +14,6 @@ interface TopicsContract {
 
         fun showTopics(cards: ArrayList<Topic>)
 
-        fun shouldShowPlaceholderText()
-
     }
 
     interface Presenter: IBasePresenter<View> {

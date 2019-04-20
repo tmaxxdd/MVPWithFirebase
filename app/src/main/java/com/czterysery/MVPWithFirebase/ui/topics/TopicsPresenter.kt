@@ -35,7 +35,6 @@ class TopicsPresenter: BasePresenter<TopicsContract.View>, TopicsContract.Presen
                     Log.d(TAG, "Received data: $topics")
                     view!!.showTopics(topics)
                     view!!.setProgressBar(false)
-                    view!!.shouldShowPlaceholderText()
                     Log.d(TAG, "onSuccess")
                 }
             }
@@ -44,7 +43,6 @@ class TopicsPresenter: BasePresenter<TopicsContract.View>, TopicsContract.Presen
                 if (view != null) {
                     view!!.setProgressBar(false)
                     view!!.showToast(context.getString(R.string.error_msg))
-                    view!!.shouldShowPlaceholderText()
                     Log.d(TAG, "onFailure")
                 }
             }
@@ -53,7 +51,6 @@ class TopicsPresenter: BasePresenter<TopicsContract.View>, TopicsContract.Presen
                 if (view != null) {
                     view!!.setProgressBar(false)
                     view!!.showToast(context.getString(R.string.network_failure_msg))
-                    view!!.shouldShowPlaceholderText()
                     Log.d(TAG, "onNetworkFailure")
                 }
             }

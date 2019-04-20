@@ -2,12 +2,12 @@ package com.czterysery.MVPWithFirebase.ui.content
 
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.brouding.simpledialog.SimpleDialog
 import com.czterysery.MVPWithFirebase.Constants
@@ -26,24 +26,32 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_content.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
-/**
- * Created by tmax0 on 31.12.2017.
+/*
+    ContentFragment is a class that handles list of subtopics.
+    Elements are placed in 2-row grid.
  */
+
 class ContentFragment: BaseView(), ContentContract.View {
     private val TAG = javaClass.simpleName
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
     private lateinit var presenter: ContentPresenter
+    //Class that provides data to a fragment
     private val dataRepository = DataRepository(
             RemoteDataSource(), LocalDataSource(), NetworkHelper())
     private val contentsList = ArrayList<Content>()
 
+    //RecyclerView callback
     private val gridAdapter by lazy {
         ContentRecyclerAdapter(contentsList){
+            //On card click
+            //Go to the more detailed fragment
             showDetailsFragment(it.name)
         }
     }
 
+    //Simple dialog with topic description
     private val descDialog by lazy {
+        //See https://github.com/BROUDING/SimpleDialog
         SimpleDialog.Builder(this.context!!)
                 .setTitle(resources.getString(R.string.description_label))
                 .setCancelable(true)
@@ -54,6 +62,7 @@ class ContentFragment: BaseView(), ContentContract.View {
                 }
     }
 
+    //Name of main topic
     private val contentName by lazy {
         arguments?.get(Constants.BUNDLE_CONTENT).toString()
     }
@@ -70,19 +79,10 @@ class ContentFragment: BaseView(), ContentContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initializeToolbar()
+        initToolbar()
+        initRecyclerView()
 
-        /*
-        Consider add a parallax effect with this library programatically
-        https://github.com/kanytu/android-parallax-recyclerview
-        ! parallax effect in xml doesn't work !
-         */
-        content_rv?.apply {
-            adapter = gridAdapter
-            layoutManager = GridLayoutManager(activity, 2)
-            setHasFixedSize(true)
-        }
-
+        //Show topic's description
         content_fab.onClick { descDialog.show() }
 
         getContentInfo()
@@ -103,6 +103,7 @@ class ContentFragment: BaseView(), ContentContract.View {
     override fun onResume() {
         super.onResume()
         presenter.onViewActive(this)
+        //Hide default main Toolbar and BottomNavigation
         fragmentInteractionListener.apply {
             setToolbar(false)
             setBottomNavigation(false)
@@ -131,20 +132,29 @@ class ContentFragment: BaseView(), ContentContract.View {
 
     override fun showDescription(text: String) {
         if (descDialog != null) {
-            //Dialog here
             descDialog.setContent(text)
         }
     }
 
-    private fun initializeToolbar(){
+    private fun initToolbar(){
         val appCompatAct = activity as AppCompatActivity
         appCompatAct.setSupportActionBar(content_toolbar)
         appCompatAct.supportActionBar?.apply {
+            setHasOptionsMenu(false)
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
             setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
             content_toolbar.bringToFront()
+        }
+    }
+
+    private fun initRecyclerView() {
+        //Setup the RecyclerView
+        content_rv?.apply {
+            adapter = gridAdapter
+            layoutManager = GridLayoutManager(activity, 2)
+            setHasFixedSize(true) // Size of data won't change
         }
     }
 
@@ -156,14 +166,17 @@ class ContentFragment: BaseView(), ContentContract.View {
         return super.onOptionsItemSelected(item)
     }
 
+    //Update RecyclerView's adapter on a received data
     override fun showContent(contents: ArrayList<Content>) {
         contentsList.clear()
         contentsList.addAll(contents)
         gridAdapter.notifyDataSetChanged()
     }
 
+    //go to a detailed activity
     private fun showDetailsFragment(name: String?) {
         val bundle = Bundle()
+        //Replace polish characters from path
         val ref = UnicodeFilter(false)
                 .filter("$contentName/Issues/$name/descriptions").toString()
         bundle.putString(Constants.BUNDLE_CONTENT, ref)
@@ -173,10 +186,12 @@ class ContentFragment: BaseView(), ContentContract.View {
                 true)
     }
 
+    //Get RecyclerView's data
     private fun getContent() {
         context?.applicationContext?.let { presenter.getContent(it, contentName) }
     }
 
+    //Get data like: title, image, description
     private fun getContentInfo() {
         context?.applicationContext?.let { presenter.getContentInfo(it, contentName) }
     }

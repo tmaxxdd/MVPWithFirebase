@@ -37,7 +37,6 @@ abstract class FOABaseActivity : AppCompatActivity(), FragmentManager.OnBackStac
      * @param addToBackStack ...
      */
 
-    @SuppressLint("PrivateResource")
     private fun <T: Fragment> showFragment(fragmentClass: Class<T>, bundle: Bundle? = null, addToBackStack: Boolean = false) {
         Log.d(TAG, "showFragment")
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()

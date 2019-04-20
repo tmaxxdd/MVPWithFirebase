@@ -46,10 +46,6 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = TopicsPresenter(this, dataRepository)
-        retainInstance = true
-
-        Log.d(TAG, "Bundle in topicFragment: $topicsRef")
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -96,18 +92,16 @@ class TopicsFragment: BaseView(), TopicsContract.View {
         recyclerAdapter.notifyDataSetChanged()
     }
 
-    override fun shouldShowPlaceholderText() {
-        /*
-        if (topics.isEmpty()){
-            textView.visibility = View.VISIBLE
-        }else{
-            textView.visibility = View.GONE
-        }
-        */
-    }
-
     private fun getTopics(ref: String) {
         context?.applicationContext?.let { presenter.getTopics(it, ref) }
+    }
+
+    override fun setProgressBar(show: Boolean) {
+        super.setProgressBar(show)
+        if (show)
+            progress_bar.visibility = View.VISIBLE
+        else
+            progress_bar.visibility = View.GONE
     }
 
     private fun showContentFragment(topicName: String) {
