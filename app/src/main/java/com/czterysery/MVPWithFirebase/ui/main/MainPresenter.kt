@@ -1,31 +1,23 @@
 package com.czterysery.MVPWithFirebase.ui.main
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.Toolbar
-import android.view.View
+import android.util.Log
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import com.czterysery.MVPWithFirebase.Constants
+import com.czterysery.MVPWithFirebase.DataType
+import com.czterysery.MVPWithFirebase.FragmentType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.ui.topics.TopicsFragment
 import com.czterysery.MVPWithFirebase.util.FirebaseRefUtil
 
-/**
- * Created by tmax0 on 29.12.2017.
+/*
+    This presenter is only responsible for adjusting bottom navigation.
+    The more complex configuration is moved here only for better MainActivity's readability.
  */
-class MainPresenter(private val mainView: MainActivity): MainPresenterContract {
 
-    override fun initToolbar(toolbar: Toolbar) {
-        mainView.setSupportActionBar(toolbar)
-        mainView.supportActionBar?.apply {
-            //Adjust toolbar here
-        }
-    }
+class MainPresenter(private val mainView: MainActivity) : MainPresenterContract {
+    private val TAG = javaClass.simpleName
 
-    @SuppressLint("PrivateResource", "ResourceType")
     override fun initNavItems(bottomNav: AHBottomNavigation) {
         val itemTopics = AHBottomNavigationItem(R.string.learn,
                 R.drawable.ic_explore_white_24dp, R.color.white)
@@ -38,8 +30,8 @@ class MainPresenter(private val mainView: MainActivity): MainPresenterContract {
             addItem(itemTopics)
             addItem(itemPlans)
             addItem(itemActions)
-            accentColor = Color.parseColor("#536DFE")
-            inactiveColor = Color.parseColor("#9E9E9E")
+            accentColor = resources.getColor(R.color.colorAccent)
+            inactiveColor = resources.getColor(R.color.inactiveColor)
             isForceTint = true
             isTranslucentNavigationEnabled = true
             isBehaviorTranslationEnabled = true
@@ -49,35 +41,23 @@ class MainPresenter(private val mainView: MainActivity): MainPresenterContract {
     override fun initNavCallback(bottomNav: AHBottomNavigation) {
         bottomNav.setOnTabSelectedListener { position, _ ->
             when(position) {
-                0 -> showFragmentAndReference(TopicsFragment::class.java,  FirebaseRefUtil.rootLearn)
-                1 -> showFragmentAndReference(TopicsFragment::class.java, FirebaseRefUtil.rootPlan)
-                2 -> showFragmentAndReference(TopicsFragment::class.java, FirebaseRefUtil.rootWork)
-                else -> showFragmentAndReference(TopicsFragment::class.java, FirebaseRefUtil.rootWork)
+                0 -> showTopicFragment(FirebaseRefUtil.rootLearn, FragmentType.TAG_TOPIC_LEARN)
+                1 -> showTopicFragment(FirebaseRefUtil.rootPlan, FragmentType.TAG_TOPIC_PLAN)
+                2 -> showTopicFragment(FirebaseRefUtil.rootWork, FragmentType.TAG_TOPIC_WORK)
+                else -> showTopicFragment(FirebaseRefUtil.rootLearn, FragmentType.TAG_TOPIC_LEARN)
             }
         }
+
+        //Show first fragment for default
         bottomNav.currentItem = 0
     }
 
-    override fun isToolbarVisible(toolbar: Toolbar, view: Boolean) {
-        if (view)
-            toolbar.visibility = View.VISIBLE
-        else
-            toolbar.visibility = View.GONE
-    }
-
-    override fun isBottomNavigationVisible(bottomNav: AHBottomNavigation, view: Boolean) {
-        if (view)
-            bottomNav.visibility = View.VISIBLE
-        else
-            bottomNav.visibility = View.GONE
-    }
-
-    private fun <T: Fragment> showFragmentAndReference(fragmentClass: Class<T>, ref: String): Boolean {
+    private fun showTopicFragment(ref: String, tag: String): Boolean {
+        Log.d(TAG, "Selected bottom tab with name = $ref")
         val bundle = Bundle()
-        bundle.putString(Constants.BUNDLE_TOPIC, ref)
-        mainView.showFragment(fragmentClass, bundle)
+        bundle.putString(DataType.BUNDLE_TOPIC, ref)
+        mainView.showFragment(TopicsFragment::class.java, bundle, false, tag)
         return true
     }
-
 
 }

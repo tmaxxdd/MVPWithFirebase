@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.czterysery.MVPWithFirebase.Constants
+import com.czterysery.MVPWithFirebase.DataType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
@@ -41,7 +41,7 @@ class DetailsFragment: BaseView(), DetailsContract.View {
     }
 
     private val contentName by lazy {
-        arguments?.get(Constants.BUNDLE_CONTENT).toString()
+        arguments?.get(DataType.BUNDLE_CONTENT).toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

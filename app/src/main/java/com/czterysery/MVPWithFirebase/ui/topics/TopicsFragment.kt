@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.czterysery.MVPWithFirebase.Constants
+import com.czterysery.MVPWithFirebase.DataType
+import com.czterysery.MVPWithFirebase.FragmentType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
@@ -20,8 +21,10 @@ import com.czterysery.MVPWithFirebase.util.UnicodeFilter
 import com.czterysery.MVPWithFirebase.util.mvp.BaseView
 import kotlinx.android.synthetic.main.fragment_topics.*
 
-/**
- * Created by tmax0 on 22.12.2017.
+/*
+    Fragment that shows a list with general topics(RecyclerView)
+     according to selected tab (BottomNavigation).
+
  */
 class TopicsFragment: BaseView(), TopicsContract.View {
     private val TAG = javaClass.simpleName
@@ -40,19 +43,22 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     private val topicsRef by lazy {
-        arguments?.get(Constants.BUNDLE_TOPIC).toString()
+        arguments?.get(DataType.BUNDLE_TOPIC).toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = TopicsPresenter(this, dataRepository)
+        Log.d(TAG, "onCreate")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "onCreateView")
         return inflater.inflate(R.layout.fragment_topics, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated")
         topics_rv.apply {
             adapter = recyclerAdapter
             layoutManager = LinearLayoutManager(context)
@@ -63,25 +69,28 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach")
         super.onAttach(context)
         fragmentInteractionListener = activity as BaseFragmentInteractionListener
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "Fragment detached.")
+        Log.d(TAG, "onDetach")
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume")
         presenter.onViewActive(this)
         fragmentInteractionListener.apply {
-            setToolbar(true)
-            setBottomNavigation(true)
+            setToolbarVisible(true)
+            setBottomNavigationVisible(true)
         }
     }
 
     override fun onPause() {
+        Log.d(TAG, "onPause")
         presenter.onViewInactive()
         super.onPause()
     }
@@ -93,7 +102,11 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     private fun getTopics(ref: String) {
-        context?.applicationContext?.let { presenter.getTopics(it, ref) }
+        //TODO New data isn't refreshed when change on bottom navigation. Probably lifecycle problem.
+        context?.applicationContext?.let {
+            Log.d(TAG, "Display topic's fragment with a data = $ref")
+            presenter.getTopics(it, ref)
+        }
     }
 
     override fun setProgressBar(show: Boolean) {
@@ -108,10 +121,10 @@ class TopicsFragment: BaseView(), TopicsContract.View {
         val bundle = Bundle()
         var ref = "$topicsRef/$topicName"
         ref = UnicodeFilter(false).filter(ref).toString()
-        bundle.putString(Constants.BUNDLE_CONTENT, ref)
+        bundle.putString(DataType.BUNDLE_CONTENT, ref)
         fragmentInteractionListener.showFragment(
                 ContentFragment::class.java,
                 bundle,
-                true)
+                true, FragmentType.TAG_CONTENT)
     }
 }

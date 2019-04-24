@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.brouding.simpledialog.SimpleDialog
-import com.czterysery.MVPWithFirebase.Constants
+import com.czterysery.MVPWithFirebase.DataType
+import com.czterysery.MVPWithFirebase.FragmentType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
@@ -64,7 +65,7 @@ class ContentFragment: BaseView(), ContentContract.View {
 
     //Name of main topic
     private val contentName by lazy {
-        arguments?.get(Constants.BUNDLE_CONTENT).toString()
+        arguments?.get(DataType.BUNDLE_CONTENT).toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,8 +106,8 @@ class ContentFragment: BaseView(), ContentContract.View {
         presenter.onViewActive(this)
         //Hide default main Toolbar and BottomNavigation
         fragmentInteractionListener.apply {
-            setToolbar(false)
-            setBottomNavigation(false)
+            setToolbarVisible(false)
+            setBottomNavigationVisible(false)
         }
     }
 
@@ -179,11 +180,11 @@ class ContentFragment: BaseView(), ContentContract.View {
         //Replace polish characters from path
         val ref = UnicodeFilter(false)
                 .filter("$contentName/Issues/$name/descriptions").toString()
-        bundle.putString(Constants.BUNDLE_CONTENT, ref)
+        bundle.putString(DataType.BUNDLE_CONTENT, ref)
         fragmentInteractionListener.showFragment(
                 DetailsFragment::class.java,
                 bundle,
-                true)
+                true, FragmentType.TAG_DETAILS)
     }
 
     //Get RecyclerView's data
