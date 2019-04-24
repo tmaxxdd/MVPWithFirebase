@@ -22,7 +22,6 @@ abstract class DataSource {
 
     abstract fun getTopics(context: Context, ref: String, callback: GetTopicsCallback)
 
-
     interface GetContentCallback {
 
         fun onSuccess(contents: ArrayList<Content>)

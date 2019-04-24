@@ -20,9 +20,9 @@ class LocalDataSource : DataSource() {
         callback.onSuccess(retrievedTopics)
     }
 
-    fun storeTopics(context: Context, ref: String, topics: ArrayList<Topic>){
+    inline fun <reified T> storeTopics(context: Context, ref: String, topics: ArrayList<T>){
         val gsonUtil = GsonUtil(context)
-        gsonUtil.storeObjectsArray<Topic>(ref, topics)
+        gsonUtil.storeObjectsArray(ref, topics)
     }
 
     override fun getContent(context: Context, ref: String, callback: GetContentCallback) {

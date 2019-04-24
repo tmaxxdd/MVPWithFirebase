@@ -3,7 +3,7 @@ package com.czterysery.MVPWithFirebase.data.models
 /**
  * Created by tmax0 on 07.01.2018.
  */
-class Detail {
-    val name: String? = null
+data class Detail (
+    val name: String? = null,
     val description: String? = null
-}
+)

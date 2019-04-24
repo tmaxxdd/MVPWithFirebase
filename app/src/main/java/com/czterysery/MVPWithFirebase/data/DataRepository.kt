@@ -9,8 +9,9 @@ import com.czterysery.MVPWithFirebase.data.models.Detail
 import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.util.NetworkHelper
 
-/**
- * Created by tmax0 on 24.12.2017.
+/*
+    This class according to a network status returns data from
+    the Firebase or a local data repository.
  */
 class DataRepository(private val remoteDataSource: DataSource,
                      private val localDataSource: DataSource,
@@ -18,11 +19,9 @@ class DataRepository(private val remoteDataSource: DataSource,
     private val TAG = javaClass.simpleName
 
     fun getTopics(context: Context, ref: String, callback: DataSource.GetTopicsCallback) {
-
         if (networkHelper.isNetworkAvailable(context)) {
-
+            //Internet connection available
             Log.d(TAG, "Connected to the network.")
-
             remoteDataSource.getTopics(context, ref, object : DataSource.GetTopicsCallback {
 
                 override fun onSuccess(topics: ArrayList<Topic>) {
@@ -45,10 +44,10 @@ class DataRepository(private val remoteDataSource: DataSource,
     }
 
     fun getContent(context: Context, ref: String, callback: DataSource.GetContentCallback) {
-        val issuesRef = ref + "/Issues"
+        val issuesRef = "$ref/Issues"
 
         if (networkHelper.isNetworkAvailable(context)) {
-
+            //Internet connection available
             Log.d(TAG, "Connected to the network.")
 
             remoteDataSource.getContent(context, ref, object : DataSource.GetContentCallback {
@@ -77,7 +76,7 @@ class DataRepository(private val remoteDataSource: DataSource,
     fun getContentInfo(context: Context, ref: String, callback: DataSource.GetContentInfoCallback){
 
         if (networkHelper.isNetworkAvailable(context)) {
-
+            //Internet connection available
             remoteDataSource.getContentInfo(context, ref, object : DataSource.GetContentInfoCallback {
 
                 override fun onSuccess(info: ContentInfo) {
@@ -102,7 +101,7 @@ class DataRepository(private val remoteDataSource: DataSource,
     fun getDetails(context: Context, ref: String, callback: DataSource.GetDetailsCallback) {
 
         if (networkHelper.isNetworkAvailable(context)) {
-
+            //Internet connection available
             remoteDataSource.getDetails(context, ref, object : DataSource.GetDetailsCallback {
 
                 override fun onSuccess(details: ArrayList<Detail>) {

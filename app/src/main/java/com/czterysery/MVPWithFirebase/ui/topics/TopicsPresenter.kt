@@ -12,7 +12,6 @@ import com.czterysery.MVPWithFirebase.util.mvp.BasePresenter
  * Created by tmax0 on 24.12.2017.
  */
 class TopicsPresenter: BasePresenter<TopicsContract.View>, TopicsContract.Presenter {
-
     private val TAG = javaClass.simpleName
     private val dataRepository: DataRepository
 

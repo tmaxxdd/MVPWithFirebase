@@ -38,6 +38,7 @@ class TopicsFragment: BaseView(), TopicsContract.View {
         TopicsRecyclerAdapter(topics){
             //On card clicked
             if(it.name != null)
+                //Callback comes from TopicsRecyclerAdapter
                 showContentFragment(it.name)
         }
     }
@@ -49,16 +50,13 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = TopicsPresenter(this, dataRepository)
-        Log.d(TAG, "onCreate")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(TAG, "onCreateView")
         return inflater.inflate(R.layout.fragment_topics, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(TAG, "onViewCreated")
         topics_rv.apply {
             adapter = recyclerAdapter
             layoutManager = LinearLayoutManager(context)
@@ -69,19 +67,17 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach")
         super.onAttach(context)
         fragmentInteractionListener = activity as BaseFragmentInteractionListener
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "onDetach")
+        Log.d(TAG, "$TAG detached")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
         presenter.onViewActive(this)
         fragmentInteractionListener.apply {
             setToolbarVisible(true)
@@ -90,7 +86,6 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     override fun onPause() {
-        Log.d(TAG, "onPause")
         presenter.onViewInactive()
         super.onPause()
     }
@@ -102,9 +97,8 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     private fun getTopics(ref: String) {
-        //TODO New data isn't refreshed when change on bottom navigation. Probably lifecycle problem.
         context?.applicationContext?.let {
-            Log.d(TAG, "Display topic's fragment with a data = $ref")
+            Log.d(TAG, "Display $TAG with a data = $ref")
             presenter.getTopics(it, ref)
         }
     }
