@@ -1,8 +1,6 @@
 package com.czterysery.MVPWithFirebase.data.models
 
-/**
- * Created by tmax0 on 07.01.2018.
- */
+//Is the most particular entity of the topic
 data class Detail (
     val name: String? = null,
     val description: String? = null

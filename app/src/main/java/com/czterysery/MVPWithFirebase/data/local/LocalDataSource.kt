@@ -20,20 +20,10 @@ class LocalDataSource : DataSource() {
         callback.onSuccess(retrievedTopics)
     }
 
-    inline fun <reified T> storeTopics(context: Context, ref: String, topics: ArrayList<T>){
-        val gsonUtil = GsonUtil(context)
-        gsonUtil.storeObjectsArray(ref, topics)
-    }
-
     override fun getContent(context: Context, ref: String, callback: GetContentCallback) {
         val gsonUtil = GsonUtil(context)
         val retrievedContent = gsonUtil.retrieveObjectsArray<Content>(ref)
         callback.onSuccess(retrievedContent)
-    }
-
-    fun storeContent(context: Context, ref: String, contents: ArrayList<Content>) {
-        val gsonUtil = GsonUtil(context)
-        gsonUtil.storeObjectsArray<Content>(ref, contents)
     }
 
     override fun getContentInfo(context: Context, ref: String, callback: GetContentInfoCallback){
@@ -42,20 +32,20 @@ class LocalDataSource : DataSource() {
         callback.onSuccess(item)
     }
 
-    fun storeContentInfo(context: Context, ref: String, info: ContentInfo) {
-        val gsonUtil = GsonUtil(context)
-        gsonUtil.storeObject<ContentInfo>(ref, info)
-    }
-
-    fun storeDetails(context: Context, ref: String, details: ArrayList<Detail>) {
-        val gsonUtil = GsonUtil(context)
-        gsonUtil.storeObjectsArray<Detail>(ref, details)
-    }
-
     override fun getDetails(context: Context, ref: String, callback: GetDetailsCallback) {
         val gsonUtil = GsonUtil(context)
         val details = gsonUtil.retrieveObjectsArray<Detail>(ref)
         callback.onSuccess(details)
+    }
+
+    inline fun <reified T> storeData(context: Context, ref: String, data: ArrayList<T>) {
+        val gsonUtil = GsonUtil(context)
+        gsonUtil.storeObjectsArray(ref, data)
+    }
+
+    inline fun <reified T> storeData(context: Context, ref: String, data: T) {
+        val gsonUtil = GsonUtil(context)
+        gsonUtil.storeObject<T>(ref, data as Any)
     }
 
 }

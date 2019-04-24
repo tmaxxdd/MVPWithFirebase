@@ -26,7 +26,7 @@ class DataRepository(private val remoteDataSource: DataSource,
 
                 override fun onSuccess(topics: ArrayList<Topic>) {
                     callback.onSuccess(topics)
-                    (localDataSource as LocalDataSource).storeTopics(context, ref, topics)
+                    (localDataSource as LocalDataSource).storeData(context, ref, topics)
                 }
 
                 override fun onFailure(throwable: Throwable) {
@@ -55,7 +55,7 @@ class DataRepository(private val remoteDataSource: DataSource,
                 override fun onSuccess(contents: ArrayList<Content>) {
                     callback.onSuccess(contents)
 
-                    (localDataSource as LocalDataSource).storeContent(context, issuesRef, contents)
+                    (localDataSource as LocalDataSource).storeData(context, issuesRef, contents)
                 }
 
                 override fun onFailure(throwable: Throwable) {
@@ -81,7 +81,7 @@ class DataRepository(private val remoteDataSource: DataSource,
 
                 override fun onSuccess(info: ContentInfo) {
                     callback.onSuccess(info)
-                    (localDataSource as LocalDataSource).storeContentInfo(context, ref, info)
+                    (localDataSource as LocalDataSource).storeData(context, ref, info)
                 }
 
                 override fun onFailure(throwable: Throwable) {
@@ -106,7 +106,7 @@ class DataRepository(private val remoteDataSource: DataSource,
 
                 override fun onSuccess(details: ArrayList<Detail>) {
                     callback.onSuccess(details)
-                    (localDataSource as LocalDataSource).storeDetails(context, ref, details)
+                    (localDataSource as LocalDataSource).storeData(context, ref, details)
                 }
 
                 override fun onFailure(throwable: Throwable) {

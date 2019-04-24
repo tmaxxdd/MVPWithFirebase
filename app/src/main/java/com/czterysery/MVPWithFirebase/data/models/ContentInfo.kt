@@ -1,8 +1,6 @@
 package com.czterysery.MVPWithFirebase.data.models
 
-/**
- * Created by tmax0 on 07.01.2018.
- */
+// Contains extra data like description or image for content item
 data class ContentInfo (
     val image: String? = null,
     val name: String? = null,
