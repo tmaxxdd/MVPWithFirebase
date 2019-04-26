@@ -2,50 +2,45 @@ package com.czterysery.MVPWithFirebase.data.local
 
 import android.content.Context
 import com.czterysery.MVPWithFirebase.data.DataSource
-import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.models.ContentInfo
-import com.czterysery.MVPWithFirebase.data.models.Detail
-import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.util.GsonUtil
 
-/**
- * Created by tmax0 on 24.12.2017.
+
+/*
+    This class is responsible for storing and retrieving data from
+    local source (GSON). More about GSON you can learn here:
+    https://github.com/google/gson
  */
-class LocalDataSource : DataSource() {
+class LocalDataSource(val gsonUtil: GsonUtil) : DataSource() {
     private val TAG = javaClass.simpleName
 
-    override fun getTopics(context: Context, ref: String, callback: GetTopicsCallback) {
-        val gsonUtil = GsonUtil(context)
-        val retrievedTopics = gsonUtil.retrieveObjectsArray<Topic>(ref)
-        callback.onSuccess(retrievedTopics)
+    override fun getTopics(ref: String, callback: GetTopicsCallback) {
+        callback.onSuccess(retrieveData(ref))
     }
 
-    override fun getContent(context: Context, ref: String, callback: GetContentCallback) {
-        val gsonUtil = GsonUtil(context)
-        val retrievedContent = gsonUtil.retrieveObjectsArray<Content>(ref)
-        callback.onSuccess(retrievedContent)
+    override fun getContent(ref: String, callback: GetContentCallback) {
+        callback.onSuccess(retrieveData(ref))
     }
 
-    override fun getContentInfo(context: Context, ref: String, callback: GetContentInfoCallback){
-        val gsonUtil = GsonUtil(context)
+    override fun getContentInfo(ref: String, callback: GetContentInfoCallback){
         val item: ContentInfo = gsonUtil.retrieveObject<ContentInfo>(ref) as ContentInfo
         callback.onSuccess(item)
     }
 
-    override fun getDetails(context: Context, ref: String, callback: GetDetailsCallback) {
-        val gsonUtil = GsonUtil(context)
-        val details = gsonUtil.retrieveObjectsArray<Detail>(ref)
-        callback.onSuccess(details)
+    override fun getDetails(ref: String, callback: GetDetailsCallback) {
+        callback.onSuccess(retrieveData(ref))
     }
 
-    inline fun <reified T> storeData(context: Context, ref: String, data: ArrayList<T>) {
-        val gsonUtil = GsonUtil(context)
+    inline fun <reified T> storeData(ref: String, data: ArrayList<T>) {
         gsonUtil.storeObjectsArray(ref, data)
     }
 
-    inline fun <reified T> storeData(context: Context, ref: String, data: T) {
-        val gsonUtil = GsonUtil(context)
+    inline fun <reified T> storeData(ref: String, data: T) {
         gsonUtil.storeObject<T>(ref, data as Any)
+    }
+
+    private inline fun <reified T> retrieveData(ref: String): java.util.ArrayList<T> {
+        return gsonUtil.retrieveObjectsArray(ref)
     }
 
 }

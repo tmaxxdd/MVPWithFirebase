@@ -15,22 +15,22 @@ import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
 import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
 import com.czterysery.MVPWithFirebase.ui.content.ContentFragment
-import com.czterysery.MVPWithFirebase.util.BaseFragmentInteractionListener
-import com.czterysery.MVPWithFirebase.util.NetworkHelper
-import com.czterysery.MVPWithFirebase.util.UnicodeFilter
+import com.czterysery.MVPWithFirebase.util.*
 import com.czterysery.MVPWithFirebase.util.mvp.BaseView
 import kotlinx.android.synthetic.main.fragment_topics.*
 
 /*
     Fragment that shows a list with general topics(RecyclerView)
-     according to selected tab (BottomNavigation).
+    according to selected tab (BottomNavigation).
 
  */
 class TopicsFragment: BaseView(), TopicsContract.View {
     private val TAG = javaClass.simpleName
     private val topics = ArrayList<Topic>()
     private val dataRepository = DataRepository(
-            RemoteDataSource(), LocalDataSource(), NetworkHelper())
+            RemoteDataSource(),
+            LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
+            NetworkHelper(activity.applicationContext))
     private lateinit var presenter: TopicsPresenter
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
 

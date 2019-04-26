@@ -1,6 +1,5 @@
 package com.czterysery.MVPWithFirebase.data
 
-import android.content.Context
 import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.models.ContentInfo
 import com.czterysery.MVPWithFirebase.data.models.Detail
@@ -9,6 +8,8 @@ import com.czterysery.MVPWithFirebase.data.models.Topic
 /**
  * Created by tmax0 on 24.12.2017.
  */
+
+//TODO Add comments
 abstract class DataSource {
 
     interface GetTopicsCallback {
@@ -20,7 +21,7 @@ abstract class DataSource {
         fun onNetworkFailure()
     }
 
-    abstract fun getTopics(context: Context, ref: String, callback: GetTopicsCallback)
+    abstract fun getTopics(ref: String, callback: GetTopicsCallback)
 
     interface GetContentCallback {
 
@@ -32,7 +33,7 @@ abstract class DataSource {
 
     }
 
-    abstract fun getContent(context: Context, ref: String, callback: GetContentCallback)
+    abstract fun getContent(ref: String, callback: GetContentCallback)
 
     interface GetContentInfoCallback {
 
@@ -44,7 +45,7 @@ abstract class DataSource {
 
     }
 
-    abstract fun getContentInfo(context: Context, ref: String, callback: GetContentInfoCallback)
+    abstract fun getContentInfo(ref: String, callback: GetContentInfoCallback)
 
     interface GetDetailsCallback {
 
@@ -56,5 +57,5 @@ abstract class DataSource {
 
     }
 
-    abstract fun getDetails(context: Context, ref: String, callback: GetDetailsCallback)
+    abstract fun getDetails(ref: String, callback: GetDetailsCallback)
 }

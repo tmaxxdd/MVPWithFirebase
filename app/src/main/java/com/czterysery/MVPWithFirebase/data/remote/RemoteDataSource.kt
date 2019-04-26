@@ -1,6 +1,5 @@
 package com.czterysery.MVPWithFirebase.data.remote
 
-import android.content.Context
 import android.util.Log
 import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.Content
@@ -20,7 +19,7 @@ import com.google.firebase.database.ValueEventListener
 class RemoteDataSource: DataSource() {
     private val TAG = javaClass.simpleName
 
-    override fun getTopics(context: Context, ref: String, callback: GetTopicsCallback) {
+    override fun getTopics(ref: String, callback: GetTopicsCallback) {
         //Get path to data according to selected tab
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref)
         val topics = ArrayList<Topic>()
@@ -51,7 +50,7 @@ class RemoteDataSource: DataSource() {
         })
     }
 
-    override fun getContent(context: Context, ref: String, callback: GetContentCallback) {
+    override fun getContent(ref: String, callback: GetContentCallback) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref).child("Issues")
         val contents = ArrayList<Content>()
         Log.d(TAG, "Retrieving content from the $ref")
@@ -73,7 +72,7 @@ class RemoteDataSource: DataSource() {
         })
     }
 
-    override fun getContentInfo(context: Context, ref: String, callback: GetContentInfoCallback) {
+    override fun getContentInfo(ref: String, callback: GetContentInfoCallback) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref)
         Log.d(TAG, "Retrieving content from the $ref")
         databaseRef.addValueEventListener( object : ValueEventListener {
@@ -93,7 +92,7 @@ class RemoteDataSource: DataSource() {
         })
     }
 
-    override fun getDetails(context: Context, ref: String, callback: GetDetailsCallback) {
+    override fun getDetails(ref: String, callback: GetDetailsCallback) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref)
         val details = ArrayList<Detail>()
         Log.d(TAG, "Retrieving details from the $ref")
