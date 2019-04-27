@@ -17,19 +17,24 @@ import com.czterysery.MVPWithFirebase.data.models.Detail
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
 import com.czterysery.MVPWithFirebase.inflate
 import com.czterysery.MVPWithFirebase.util.BaseFragmentInteractionListener
+import com.czterysery.MVPWithFirebase.util.GsonUtil
 import com.czterysery.MVPWithFirebase.util.NetworkHelper
-import com.czterysery.MVPWithFirebase.util.mvp.BaseView
+import com.czterysery.MVPWithFirebase.util.SharedPrefsHelper
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragment
 import kotlinx.android.synthetic.main.fragment_details.*
 import org.jetbrains.anko.support.v4.toast
 
 /**
  * Created by tmax0 on 07.01.2018.
  */
-class DetailsFragment: BaseView(), DetailsContract.View {
+//TODO Refactor
+class DetailsFragment: BaseFragment(), DetailsContract.Fragment {
     private val TAG = javaClass.simpleName
     private val details = ArrayList<Detail>()
     private val dataRepository = DataRepository(
-            RemoteDataSource(), LocalDataSource(), NetworkHelper())
+            RemoteDataSource(),
+            LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
+            NetworkHelper(activity!!.applicationContext))
 
     private lateinit var presenter: DetailsPresenter
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener

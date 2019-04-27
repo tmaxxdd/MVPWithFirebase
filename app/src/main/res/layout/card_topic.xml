@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Updated Card View https://material.io/develop/android/components/material-card-view/ -->
+<!-- Updated Card Fragment https://material.io/develop/android/components/material-card-view/ -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

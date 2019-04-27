@@ -1,6 +1,5 @@
 package com.czterysery.MVPWithFirebase.ui.topics
 
-import android.content.Context
 import android.util.Log
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
@@ -8,26 +7,30 @@ import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.util.mvp.BasePresenter
 
-/**
- * Created by tmax0 on 24.12.2017.
- */
-class TopicsPresenter: BasePresenter<TopicsContract.View>, TopicsContract.Presenter {
-    private val TAG = javaClass.simpleName
-    private val dataRepository: DataRepository
 
-    constructor(view: TopicsContract.View, dataRepository: DataRepository){
+/*
+    First of all a presenter is responsible for handling
+    data's callback from DataRepository and transferring
+    the data to a view in a suitable form.
+ */
+//TODO Refactor BasePresenter and BaseFragment
+class TopicsPresenter() :
+        BasePresenter<TopicsContract.Fragment>(), TopicsContract.Presenter {
+    private val TAG = javaClass.simpleName
+    private lateinit var dataRepository: DataRepository
+
+    constructor(view: TopicsContract.Fragment, dataRepository: DataRepository) : this() {
         this.dataRepository = dataRepository
         this.view = view
     }
 
-    override fun getTopics(context: Context, ref: String) {
+    override fun getTopics(ref: String) {
 
-        if (view == null)
-            return
+        if (view == null) return //Cannot access view
 
         view!!.setProgressBar(true)
 
-        dataRepository.getTopics(context, ref, object : DataSource.GetTopicsCallback {
+        dataRepository.getTopics(ref, object : DataSource.GetTopicsCallback {
 
             override fun onSuccess(topics: ArrayList<Topic>) {
                 if (view != null) {

@@ -19,10 +19,8 @@ import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
 import com.czterysery.MVPWithFirebase.inflate
 import com.czterysery.MVPWithFirebase.ui.details.DetailsFragment
-import com.czterysery.MVPWithFirebase.util.BaseFragmentInteractionListener
-import com.czterysery.MVPWithFirebase.util.NetworkHelper
-import com.czterysery.MVPWithFirebase.util.UnicodeFilter
-import com.czterysery.MVPWithFirebase.util.mvp.BaseView
+import com.czterysery.MVPWithFirebase.util.*
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_content.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -32,13 +30,15 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
     Elements are placed in 2-row grid.
  */
 
-class ContentFragment: BaseView(), ContentContract.View {
+class ContentFragment: BaseFragment(), ContentContract.Fragment {
     private val TAG = javaClass.simpleName
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
     private lateinit var presenter: ContentPresenter
     //Class that provides data to a fragment
     private val dataRepository = DataRepository(
-            RemoteDataSource(), LocalDataSource(), NetworkHelper())
+            RemoteDataSource(),
+            LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
+            NetworkHelper(activity!!.applicationContext))
     private val contentsList = ArrayList<Content>()
 
     //RecyclerView callback

@@ -1,26 +1,27 @@
 package com.czterysery.MVPWithFirebase.ui.topics
 
-import android.content.Context
 import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.util.mvp.IBasePresenter
-import com.czterysery.MVPWithFirebase.util.mvp.IBaseView
+import com.czterysery.MVPWithFirebase.util.mvp.IBaseFragment
 
 /*
-    First of all a presenter is responsible for handling
-    data's callback from DataRepository and transferring
-    the data to a view in a suitable form.
+    Topic is only responsible for showing cards with given topics.
  */
 interface TopicsContract {
 
-    interface View : IBaseView {
+    // View
+    interface Fragment : IBaseFragment {
 
+        // Show list of cards
         fun showTopics(cards: ArrayList<Topic>)
 
     }
 
-    interface Presenter: IBasePresenter<View> {
+    // Presenter
+    interface Presenter: IBasePresenter<Fragment> {
 
-        fun getTopics(context: Context, ref: String)
+        // Retrieve an Arraylist with card's items
+        fun getTopics(ref: String)
 
     }
 }

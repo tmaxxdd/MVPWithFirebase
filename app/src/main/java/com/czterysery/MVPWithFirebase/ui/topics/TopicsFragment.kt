@@ -16,30 +16,31 @@ import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
 import com.czterysery.MVPWithFirebase.ui.content.ContentFragment
 import com.czterysery.MVPWithFirebase.util.*
-import com.czterysery.MVPWithFirebase.util.mvp.BaseView
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragment
 import kotlinx.android.synthetic.main.fragment_topics.*
 
 /*
-    Fragment that shows a list with general topics(RecyclerView)
+    Fragment which shows a list with general topics(RecyclerView)
     according to selected tab (BottomNavigation).
-
  */
-class TopicsFragment: BaseView(), TopicsContract.View {
+
+class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
     private val TAG = javaClass.simpleName
     private val topics = ArrayList<Topic>()
     private val dataRepository = DataRepository(
             RemoteDataSource(),
             LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
-            NetworkHelper(activity.applicationContext))
+            NetworkHelper(activity!!.applicationContext))
     private lateinit var presenter: TopicsPresenter
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
 
     private val recyclerAdapter by lazy {
-        TopicsRecyclerAdapter(topics){
+        TopicsRecyclerAdapter(topics){ card ->
             //On card clicked
-            if(it.name != null)
+            card.name?.let { name ->
                 //Callback comes from TopicsRecyclerAdapter
-                showContentFragment(it.name)
+                showContentFragment(name)
+            }
         }
     }
 
@@ -78,6 +79,7 @@ class TopicsFragment: BaseView(), TopicsContract.View {
 
     override fun onResume() {
         super.onResume()
+        //Notice presenter that view can be accessible
         presenter.onViewActive(this)
         fragmentInteractionListener.apply {
             setToolbarVisible(true)
@@ -86,6 +88,7 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     override fun onPause() {
+        //Notice presenter that view cannot be accessible
         presenter.onViewInactive()
         super.onPause()
     }
@@ -97,15 +100,15 @@ class TopicsFragment: BaseView(), TopicsContract.View {
     }
 
     private fun getTopics(ref: String) {
-        context?.applicationContext?.let {
-            Log.d(TAG, "Display $TAG with a data = $ref")
-            presenter.getTopics(it, ref)
-        }
+        //Request for a data
+        presenter.getTopics(ref)
+        Log.d(TAG, "Display $TAG with a data = $ref")
     }
 
-    override fun setProgressBar(show: Boolean) {
-        super.setProgressBar(show)
-        if (show)
+    //From BaseFragment
+    override fun setProgressBar(visible: Boolean) {
+        super.setProgressBar(visible)
+        if (visible)
             progress_bar.visibility = View.VISIBLE
         else
             progress_bar.visibility = View.GONE

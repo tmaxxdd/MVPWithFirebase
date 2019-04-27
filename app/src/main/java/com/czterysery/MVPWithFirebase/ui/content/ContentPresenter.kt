@@ -11,11 +11,11 @@ import com.czterysery.MVPWithFirebase.util.mvp.BasePresenter
 /**
  * Created by tmax0 on 05.01.2018.
  */
-class ContentPresenter: BasePresenter<ContentContract.View>, ContentContract.Presenter  {
+class ContentPresenter: BasePresenter<ContentContract.Fragment>, ContentContract.Presenter  {
     private val TAG = javaClass.simpleName
 
     private val dataRepository: DataRepository
-    constructor(view: ContentContract.View, dataRepository: DataRepository){
+    constructor(view: ContentContract.Fragment, dataRepository: DataRepository){
         this.dataRepository = dataRepository
         this.view = view
     }
