@@ -1,7 +1,5 @@
 package com.czterysery.MVPWithFirebase.ui.topics
 
-import android.util.Log
-import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.Topic
@@ -18,9 +16,6 @@ class TopicsPresenter(private val dataRepository: DataRepository) :
     private val TAG = javaClass.simpleName
 
     override fun getTopics(ref: String) {
-
-        //View comes from BasePresenter
-        if (view == null) return //Cannot access view
 
         view!!.setProgressBar(true)
 

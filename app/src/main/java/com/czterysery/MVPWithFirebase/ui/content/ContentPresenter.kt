@@ -1,82 +1,73 @@
 package com.czterysery.MVPWithFirebase.ui.content
 
-import android.content.Context
-import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.models.ContentInfo
 import com.czterysery.MVPWithFirebase.util.mvp.BasePresenter
 
-/**
- * Created by tmax0 on 05.01.2018.
+/*
+    Content presenter handles callback for list of cards in ContentFragment
+    and additional data like image and title of selected topic.
  */
-class ContentPresenter: BasePresenter<ContentContract.Fragment>, ContentContract.Presenter  {
+class ContentPresenter(private val dataRepository: DataRepository): BasePresenter<ContentContract.Fragment>, ContentContract.Presenter  {
     private val TAG = javaClass.simpleName
 
-    private val dataRepository: DataRepository
-    constructor(view: ContentContract.Fragment, dataRepository: DataRepository){
-        this.dataRepository = dataRepository
-        this.view = view
-    }
+    override fun getContent(ref: String) {
 
-    override fun getContent(context: Context, name: String) {
-
-        if (view == null)
-            return
-
+        //Show loading
         view?.setProgressBar(true)
 
-        dataRepository.getContent(context, name, object : DataSource.GetContentCallback {
+        dataRepository.getContent(ref, object : DataSource.GetContentCallback {
 
             override fun onSuccess(contents: ArrayList<Content>) {
-                if (view != null){
-                    view!!.showContent(contents)
-                    view!!.setProgressBar(false)
+                view?.let {
+                    it.showContent(contents)
+                    it.setProgressBar(false)
                 }
             }
 
             override fun onFailure(throwable: Throwable) {
-                if (view != null){
-                    view!!.setProgressBar(false)
-                    view!!.showToast(context.getString(R.string.error_msg))
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to retrieve data")
                 }
             }
 
             override fun onNetworkFailure() {
-                if (view != null){
-                    view!!.setProgressBar(false)
-                    view!!.showToast(context.getString(R.string.network_failure_msg))
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to connect to the internet")
                 }
             }
 
         })
     }
 
-    override fun getContentInfo(context: Context, name: String) {
+    override fun getContentInfo(ref: String) {
 
-        dataRepository.getContentInfo(context, name, object : DataSource.GetContentInfoCallback {
+        dataRepository.getContentInfo(ref, object : DataSource.GetContentInfoCallback {
 
             override fun onSuccess(info: ContentInfo) {
-                if (view != null) {
-                    view!!.setProgressBar(false)
-                    info.image?.let { view!!.showImage(it) }
-                    info.name?.let { view!!.showTitle(it) }
-                    info.description?.let { view!!.showDescription(it) }
+                view?.let{ view ->
+                    view.setProgressBar(false)
+                    info.image?.let { image -> view.showImage(image) }
+                    info.name?.let { name -> view.showTitle(name) }
+                    info.description?.let { desc -> view.showDescription(desc) }
                 }
             }
 
             override fun onFailure(throwable: Throwable) {
-                if (view != null) {
-                    view!!.setProgressBar(false)
-                    view!!.showToast(context.getString(R.string.error_msg))
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to retrieve data")
                 }
             }
 
             override fun onNetworkFailure() {
-                if (view != null) {
-                    view!!.setProgressBar(false)
-                    view!!.showToast(context.getString(R.string.network_failure_msg))
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to connect to the internet")
                 }
             }
 

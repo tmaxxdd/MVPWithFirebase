@@ -53,7 +53,6 @@ class MainPresenter(private val mainView: MainActivity) : MainPresenterContract 
     }
 
     private fun showTopicFragment(ref: String, tag: String): Boolean {
-        Log.d(TAG, "Selected bottom tab with name = $ref")
         val bundle = Bundle()
         bundle.putString(DataType.BUNDLE_TOPIC, ref)
         mainView.showFragment(TopicsFragment::class.java, bundle, false, tag)

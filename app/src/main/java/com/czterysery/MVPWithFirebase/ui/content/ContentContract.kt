@@ -24,9 +24,9 @@ interface ContentContract {
 
     interface Presenter: IBasePresenter<Fragment> {
 
-        fun getContent(context: Context, name: String)
+        fun getContent(ref: String)
 
-        fun getContentInfo(context: Context, name: String)
+        fun getContentInfo(ref: String)
 
     }
 }

@@ -5,8 +5,8 @@
     <string name="learn">Poznaj</string>
     <string name="plan">Planuj</string>
     <string name="work">Działaj</string>
-    <string name="error_msg">App wasn\'t able to retrieve data.</string>
-    <string name="network_failure_msg">App wasn\'t able to connect to the internet.</string>
+    <string name="error_msg">App wasn\'t able to retrieve data</string>
+    <string name="network_failure_msg">App wasn\'t able to connect to the internet</string>
     <string name="image">image</string>
     <string name="description_label">Description</string>
     <string name="filter_view_mvp_app">MVPWithFirebase</string>
