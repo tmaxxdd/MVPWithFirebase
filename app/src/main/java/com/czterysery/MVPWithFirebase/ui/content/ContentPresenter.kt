@@ -10,7 +10,8 @@ import com.czterysery.MVPWithFirebase.util.mvp.BasePresenter
     Content presenter handles callback for list of cards in ContentFragment
     and additional data like image and title of selected topic.
  */
-class ContentPresenter(private val dataRepository: DataRepository): BasePresenter<ContentContract.Fragment>, ContentContract.Presenter  {
+class ContentPresenter(private val dataRepository: DataRepository):
+        BasePresenter<ContentContract.Fragment>(), ContentContract.Presenter  {
     private val TAG = javaClass.simpleName
 
     override fun getContent(ref: String) {

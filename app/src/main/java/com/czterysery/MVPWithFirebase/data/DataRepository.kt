@@ -1,12 +1,11 @@
 package com.czterysery.MVPWithFirebase.data
 
-import android.util.Log
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
 import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.models.ContentInfo
 import com.czterysery.MVPWithFirebase.data.models.Detail
 import com.czterysery.MVPWithFirebase.data.models.Topic
-import com.czterysery.MVPWithFirebase.util.NetworkHelper
+import com.czterysery.MVPWithFirebase.util.helpers.NetworkHelper
 
 /*
     This class according to a network status returns data from
@@ -20,7 +19,6 @@ class DataRepository(private val remoteDataSource: DataSource,
     fun getTopics(ref: String, callback: DataSource.GetTopicsCallback) {
         if (networkHelper.isNetworkAvailable()) {
             //Internet connection available
-            Log.d(TAG, "getTopics: Connected to the network.")
             remoteDataSource.getTopics(ref, object : DataSource.GetTopicsCallback {
 
                 override fun onSuccess(topics: ArrayList<Topic>) {
@@ -37,18 +35,14 @@ class DataRepository(private val remoteDataSource: DataSource,
                 }
             })
         } else {
-            Log.d(TAG, "getTopics: Cannot connect to the network")
             localDataSource.getTopics(ref, callback)
         }
     }
 
     fun getContent(ref: String, callback: DataSource.GetContentCallback) {
         val issuesRef = "$ref/Issues"
-
         if (networkHelper.isNetworkAvailable()) {
             //Internet connection available
-            Log.d(TAG, "getContent: Connected to the network.")
-
             remoteDataSource.getContent( ref, object : DataSource.GetContentCallback {
 
                 override fun onSuccess(contents: ArrayList<Content>) {
@@ -67,7 +61,6 @@ class DataRepository(private val remoteDataSource: DataSource,
 
             })
         } else {
-            Log.d(TAG, "getContent: Cannot connect to the network")
             localDataSource.getContent(issuesRef, callback)
         }
     }
@@ -76,7 +69,6 @@ class DataRepository(private val remoteDataSource: DataSource,
 
         if (networkHelper.isNetworkAvailable()) {
             //Internet connection available
-            Log.d(TAG, "getContentInfo: Connected to the network.")
             remoteDataSource.getContentInfo(ref, object : DataSource.GetContentInfoCallback {
 
                 override fun onSuccess(info: ContentInfo) {
@@ -93,7 +85,6 @@ class DataRepository(private val remoteDataSource: DataSource,
                 }
             })
         } else {
-            Log.d(TAG, "getContentInfo: Cannot connect to the network")
             localDataSource.getContentInfo(ref, callback)
         }
     }
@@ -102,7 +93,6 @@ class DataRepository(private val remoteDataSource: DataSource,
 
         if (networkHelper.isNetworkAvailable()) {
             //Internet connection available
-            Log.d(TAG, "getDetails: Connected to the network.")
             remoteDataSource.getDetails(ref, object : DataSource.GetDetailsCallback {
 
                 override fun onSuccess(details: ArrayList<Detail>) {
@@ -119,7 +109,6 @@ class DataRepository(private val remoteDataSource: DataSource,
                 }
             })
         } else {
-            Log.d(TAG, "getDetails: Cannot connect to the network")
             localDataSource.getDetails(ref, callback)
         }
     }

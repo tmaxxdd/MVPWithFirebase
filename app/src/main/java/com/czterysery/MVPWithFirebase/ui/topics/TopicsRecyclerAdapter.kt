@@ -10,10 +10,11 @@ import com.czterysery.MVPWithFirebase.loadUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.card_topic.view.*
 
-/**
- * Created by tmax0 on 20.12.2017.
+/*
+    Shows list of cards in the TopicsFragment.
+    This class returns callback listener that
+    handles click action on the card.
  */
-//TODO Add comments
 class TopicsRecyclerAdapter(private val topics: ArrayList<Topic>, private val listener: (Topic) -> Unit):
         RecyclerView.Adapter<TopicsRecyclerAdapter.ViewHolder>() {
 
@@ -29,11 +30,6 @@ class TopicsRecyclerAdapter(private val topics: ArrayList<Topic>, private val li
         fun bind(item: Topic, listener: (Topic) -> Unit) = with(itemView) {
             item.name?.let { topic_name.text = it }
             item.image?.let { topic_image.loadUrl(it) } //From extension function
-            item.count?.let {
-                topic_read_articles.setSegmentCount(it.toInt())
-                //TODO Create implementation for read articles
-                topic_read_articles.setCompletedSegments(1) //Here change clicked articles
-            }
             setOnClickListener { listener(item) }
         }
     }

@@ -9,40 +9,40 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.czterysery.MVPWithFirebase.DataType
+import com.czterysery.MVPWithFirebase.util.constants.DataType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
 import com.czterysery.MVPWithFirebase.data.models.Detail
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
 import com.czterysery.MVPWithFirebase.inflate
-import com.czterysery.MVPWithFirebase.util.BaseFragmentInteractionListener
-import com.czterysery.MVPWithFirebase.util.GsonUtil
-import com.czterysery.MVPWithFirebase.util.NetworkHelper
-import com.czterysery.MVPWithFirebase.util.SharedPrefsHelper
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragmentInteractionListener
+import com.czterysery.MVPWithFirebase.util.helpers.GsonHelper
+import com.czterysery.MVPWithFirebase.util.helpers.NetworkHelper
+import com.czterysery.MVPWithFirebase.util.helpers.SharedPrefsHelper
 import com.czterysery.MVPWithFirebase.util.mvp.BaseFragment
 import kotlinx.android.synthetic.main.fragment_details.*
-import org.jetbrains.anko.support.v4.toast
 
-/**
- * Created by tmax0 on 07.01.2018.
+/*
+    DetailsFragment shows title of selected issue
+    and list of cards with content.
  */
-//TODO Refactor
 class DetailsFragment: BaseFragment(), DetailsContract.Fragment {
     private val TAG = javaClass.simpleName
     private val details = ArrayList<Detail>()
-    private val dataRepository = DataRepository(
-            RemoteDataSource(),
-            LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
-            NetworkHelper(activity!!.applicationContext))
-
     private lateinit var presenter: DetailsPresenter
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
 
+    private val dataRepository by lazy {
+        //First invocation is in the onCreate, so we are sure that activity has been instantiated
+        DataRepository(
+                RemoteDataSource(),
+                LocalDataSource(GsonHelper(SharedPrefsHelper(activity!!.applicationContext))),
+                NetworkHelper(activity!!.applicationContext))
+    }
+
     private val detailsAdapter by lazy {
-        DetailsRecyclerAdapter(context, details) {
-            toast("Clicked on card!")
-        }
+        DetailsRecyclerAdapter(details)
     }
 
     private val contentName by lazy {
@@ -51,7 +51,7 @@ class DetailsFragment: BaseFragment(), DetailsContract.Fragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = DetailsPresenter(this, dataRepository)
+        presenter = DetailsPresenter(dataRepository)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,7 +79,7 @@ class DetailsFragment: BaseFragment(), DetailsContract.Fragment {
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "Fragment detached.")
+        Log.d(TAG, "$TAG detached.")
     }
 
     override fun onResume() {
@@ -120,12 +120,8 @@ class DetailsFragment: BaseFragment(), DetailsContract.Fragment {
         detailsAdapter.notifyDataSetChanged()
     }
 
-    override fun shouldShowPlaceholderText() {
-
-    }
-
     private fun getDetails() {
-        context?.applicationContext?.let { presenter.getDetails(it, contentName) }
+        context?.applicationContext?.let { presenter.getDetails(contentName) }
     }
 
     private fun getOnlyDetailsBranch(text: String): String {

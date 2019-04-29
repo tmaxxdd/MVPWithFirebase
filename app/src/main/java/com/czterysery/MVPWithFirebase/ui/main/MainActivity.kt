@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.czterysery.MVPWithFirebase.R
-import com.czterysery.MVPWithFirebase.util.BaseFragmentInteractionListener
-import com.czterysery.MVPWithFirebase.util.FOABaseActivity
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragmentInteractionListener
+import com.czterysery.MVPWithFirebase.util.mvp.FOABaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 /*

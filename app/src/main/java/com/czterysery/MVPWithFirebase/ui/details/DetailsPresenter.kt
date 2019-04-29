@@ -1,58 +1,42 @@
 package com.czterysery.MVPWithFirebase.ui.details
 
-import android.content.Context
-import android.util.Log
-import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.Detail
 import com.czterysery.MVPWithFirebase.util.mvp.BasePresenter
 
-/**
- * Created by tmax0 on 08.01.2018.
+/*
+    DetailsPresenter request and receive the most detailed data from
+    DataRepository and shows it thanks to DetailsFragment
  */
-class DetailsPresenter : BasePresenter<DetailsContract.Fragment>, DetailsContract.Presenter  {
+class DetailsPresenter(private val dataRepository: DataRepository) :
+        BasePresenter<DetailsContract.Fragment>(), DetailsContract.Presenter  {
     private val TAG = javaClass.simpleName
-    private val dataRepository: DataRepository
 
-    constructor(view: DetailsContract.Fragment, dataRepository: DataRepository){
-        this.dataRepository = dataRepository
-        this.view = view
-    }
-
-    override fun getDetails(context: Context, name: String) {
-
-        if (view == null)
-            return
+    override fun getDetails(name: String) {
 
         view?.setProgressBar(true)
 
-        dataRepository.getDetails(context, name, object : DataSource.GetDetailsCallback {
+        dataRepository.getDetails(name, object : DataSource.GetDetailsCallback {
 
             override fun onSuccess(details: ArrayList<Detail>) {
-                if (view != null) {
-                    view!!.showDetails(details)
-                    view!!.setProgressBar(false)
-                    view!!.shouldShowPlaceholderText()
-                    Log.d(TAG, "onSuccess")
+                view?.let{
+                    it.showDetails(details)
+                    it.setProgressBar(false)
                 }
             }
 
             override fun onFailure(throwable: Throwable) {
-                if (view != null) {
-                    view!!.setProgressBar(false)
-                    view!!.showToast(context.getString(R.string.error_msg))
-                    view!!.shouldShowPlaceholderText()
-                    Log.d(TAG, "onFailure")
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to retrieve data")
                 }
             }
 
             override fun onNetworkFailure() {
-                if (view != null) {
-                    view!!.setProgressBar(false)
-                    view!!.showToast(context.getString(R.string.network_failure_msg))
-                    view!!.shouldShowPlaceholderText()
-                    Log.d(TAG, "onNetworkFailure")
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to connect to the internet")
                 }
             }
         })

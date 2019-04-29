@@ -10,18 +10,19 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.brouding.simpledialog.SimpleDialog
-import com.czterysery.MVPWithFirebase.DataType
-import com.czterysery.MVPWithFirebase.FragmentType
-import com.czterysery.MVPWithFirebase.R
+import com.czterysery.MVPWithFirebase.*
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
 import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
-import com.czterysery.MVPWithFirebase.inflate
 import com.czterysery.MVPWithFirebase.ui.details.DetailsFragment
-import com.czterysery.MVPWithFirebase.util.*
+import com.czterysery.MVPWithFirebase.util.constants.DataType
+import com.czterysery.MVPWithFirebase.util.constants.FragmentType
+import com.czterysery.MVPWithFirebase.util.helpers.GsonHelper
+import com.czterysery.MVPWithFirebase.util.helpers.NetworkHelper
+import com.czterysery.MVPWithFirebase.util.helpers.SharedPrefsHelper
 import com.czterysery.MVPWithFirebase.util.mvp.BaseFragment
-import com.squareup.picasso.Picasso
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_content.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -32,14 +33,17 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class ContentFragment: BaseFragment(), ContentContract.Fragment {
     private val TAG = javaClass.simpleName
+    private val contentsList = ArrayList<Content>()
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
     private lateinit var presenter: ContentPresenter
-    //Class that provides data to a fragment
-    private val dataRepository = DataRepository(
-            RemoteDataSource(),
-            LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
-            NetworkHelper(activity!!.applicationContext))
-    private val contentsList = ArrayList<Content>()
+
+    private val dataRepository by lazy {
+        //First invocation is in the onCreate, so we are sure that activity has been instantiated
+        DataRepository(
+                RemoteDataSource(),
+                LocalDataSource(GsonHelper(SharedPrefsHelper(activity!!.applicationContext))),
+                NetworkHelper(activity!!.applicationContext))
+    }
 
     //RecyclerView callback
     private val gridAdapter by lazy {
@@ -70,7 +74,7 @@ class ContentFragment: BaseFragment(), ContentContract.Fragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = ContentPresenter(this, dataRepository)
+        presenter = ContentPresenter(dataRepository)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -98,7 +102,7 @@ class ContentFragment: BaseFragment(), ContentContract.Fragment {
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "Fragment detached.")
+        Log.d(TAG, "$TAG detached.")
     }
 
     override fun onResume() {
@@ -117,24 +121,15 @@ class ContentFragment: BaseFragment(), ContentContract.Fragment {
     }
 
     override fun showImage(source: String) {
-        if (content_iv != null) {
-            Picasso.get()
-                    .load(source)
-                    .fit()
-                    .into(content_iv)
-        }
+        content_iv?.loadUrl(source)
     }
 
     override fun showTitle(title: String) {
-        if (content_title != null) {
-            content_title.text = title
-        }
+        content_title.text = title
     }
 
     override fun showDescription(text: String) {
-        if (descDialog != null) {
-            descDialog.setContent(text)
-        }
+        descDialog.setContent(text)
     }
 
     private fun initToolbar(){
@@ -189,11 +184,11 @@ class ContentFragment: BaseFragment(), ContentContract.Fragment {
 
     //Get RecyclerView's data
     private fun getContent() {
-        context?.applicationContext?.let { presenter.getContent(it, contentName) }
+        context?.applicationContext?.let { presenter.getContent(contentName) }
     }
 
     //Get data like: title, image, description
     private fun getContentInfo() {
-        context?.applicationContext?.let { presenter.getContentInfo(it, contentName) }
+        context?.applicationContext?.let { presenter.getContentInfo(contentName) }
     }
 }

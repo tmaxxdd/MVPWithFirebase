@@ -17,7 +17,7 @@ class TopicsPresenter(private val dataRepository: DataRepository) :
 
     override fun getTopics(ref: String) {
 
-        view!!.setProgressBar(true)
+        view?.setProgressBar(true)
 
         dataRepository.getTopics(ref, object : DataSource.GetTopicsCallback {
 

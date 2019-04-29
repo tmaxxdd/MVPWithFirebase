@@ -1,16 +1,16 @@
 package com.czterysery.MVPWithFirebase.ui.content
 
-import android.content.Context
 import com.czterysery.MVPWithFirebase.data.models.Content
-import com.czterysery.MVPWithFirebase.util.mvp.IBasePresenter
 import com.czterysery.MVPWithFirebase.util.mvp.IBaseFragment
+import com.czterysery.MVPWithFirebase.util.mvp.IBasePresenter
 
-/**
- * Created by tmax0 on 05.01.2018.
+/*
+    This interface provide functions that
+    ContentPresenter must implements.
  */
-//TODO Refactor
 interface ContentContract {
 
+    // View
     interface Fragment : IBaseFragment {
 
         fun showImage(source: String)
@@ -22,6 +22,7 @@ interface ContentContract {
         fun showContent(contents: ArrayList<Content>)
     }
 
+    // Presenter
     interface Presenter: IBasePresenter<Fragment> {
 
         fun getContent(ref: String)

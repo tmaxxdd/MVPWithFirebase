@@ -1,9 +1,8 @@
 package com.czterysery.MVPWithFirebase.data.local
 
-import android.content.Context
 import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.ContentInfo
-import com.czterysery.MVPWithFirebase.util.GsonUtil
+import com.czterysery.MVPWithFirebase.util.helpers.GsonHelper
 
 
 /*
@@ -11,7 +10,7 @@ import com.czterysery.MVPWithFirebase.util.GsonUtil
     local source (GSON). More about GSON you can learn here:
     https://github.com/google/gson
  */
-class LocalDataSource(val gsonUtil: GsonUtil) : DataSource() {
+class LocalDataSource(val gsonHelper: GsonHelper) : DataSource() {
     private val TAG = javaClass.simpleName
 
     override fun getTopics(ref: String, callback: GetTopicsCallback) {
@@ -23,7 +22,7 @@ class LocalDataSource(val gsonUtil: GsonUtil) : DataSource() {
     }
 
     override fun getContentInfo(ref: String, callback: GetContentInfoCallback){
-        val item: ContentInfo = gsonUtil.retrieveObject<ContentInfo>(ref) as ContentInfo
+        val item: ContentInfo = gsonHelper.retrieveObject<ContentInfo>(ref) as ContentInfo
         callback.onSuccess(item)
     }
 
@@ -32,15 +31,15 @@ class LocalDataSource(val gsonUtil: GsonUtil) : DataSource() {
     }
 
     inline fun <reified T> storeData(ref: String, data: ArrayList<T>) {
-        gsonUtil.storeObjectsArray(ref, data)
+        gsonHelper.storeObjectsArray(ref, data)
     }
 
     inline fun <reified T> storeData(ref: String, data: T) {
-        gsonUtil.storeObject<T>(ref, data as Any)
+        gsonHelper.storeObject<T>(ref, data as Any)
     }
 
     private inline fun <reified T> retrieveData(ref: String): java.util.ArrayList<T> {
-        return gsonUtil.retrieveObjectsArray(ref)
+        return gsonHelper.retrieveObjectsArray(ref)
     }
 
 }

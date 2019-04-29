@@ -1,4 +1,4 @@
-package com.czterysery.MVPWithFirebase
+package com.czterysery.MVPWithFirebase.util.constants
 
 class FragmentType {
     companion object {

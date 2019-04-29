@@ -7,16 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.czterysery.MVPWithFirebase.DataType
-import com.czterysery.MVPWithFirebase.FragmentType
+import com.czterysery.MVPWithFirebase.util.constants.DataType
+import com.czterysery.MVPWithFirebase.util.constants.FragmentType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
 import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
 import com.czterysery.MVPWithFirebase.ui.content.ContentFragment
-import com.czterysery.MVPWithFirebase.util.*
+import com.czterysery.MVPWithFirebase.util.helpers.GsonHelper
+import com.czterysery.MVPWithFirebase.util.helpers.NetworkHelper
+import com.czterysery.MVPWithFirebase.util.helpers.SharedPrefsHelper
 import com.czterysery.MVPWithFirebase.util.mvp.BaseFragment
+import com.czterysery.MVPWithFirebase.util.mvp.BaseFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_topics.*
 
 /*
@@ -27,10 +30,6 @@ import kotlinx.android.synthetic.main.fragment_topics.*
 class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
     private val TAG = javaClass.simpleName
     private val topics = ArrayList<Topic>()
-    private val dataRepository = DataRepository(
-            RemoteDataSource(),
-            LocalDataSource(GsonUtil(SharedPrefsHelper(activity!!.applicationContext))),
-            NetworkHelper(activity!!.applicationContext))
     private lateinit var presenter: TopicsPresenter
     private lateinit var fragmentInteractionListener: BaseFragmentInteractionListener
 
@@ -44,13 +43,21 @@ class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
         }
     }
 
+    private val dataRepository by lazy {
+        //First invocation is in the onCreate, so we are sure that activity has been instantiated
+        DataRepository(
+                RemoteDataSource(),
+                LocalDataSource(GsonHelper(SharedPrefsHelper(activity!!.applicationContext))),
+                NetworkHelper(activity!!.applicationContext))
+    }
+
     private val topicsRef by lazy {
         arguments?.get(DataType.BUNDLE_TOPIC).toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = TopicsPresenter(this, dataRepository)
+        presenter = TopicsPresenter(dataRepository)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -102,7 +109,6 @@ class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
     private fun getTopics(ref: String) {
         //Request for a data
         presenter.getTopics(ref)
-        Log.d(TAG, "Display $TAG with a data = $ref")
     }
 
     //From BaseFragment
@@ -116,8 +122,9 @@ class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
 
     private fun showContentFragment(topicName: String) {
         val bundle = Bundle()
-        var ref = "$topicsRef/$topicName"
-        ref = UnicodeFilter(false).filter(ref).toString()
+        var ref= "$topicsRef/$topicName"
+        ref = MyNormalizer.normalize(ref)
+        Log.d(TAG, "After normalization: $ref")
         bundle.putString(DataType.BUNDLE_CONTENT, ref)
         fragmentInteractionListener.showFragment(
                 ContentFragment::class.java,

@@ -1,4 +1,4 @@
-package com.czterysery.MVPWithFirebase.util
+package com.czterysery.MVPWithFirebase.util.helpers
 
 import android.content.Context
 import android.content.SharedPreferences

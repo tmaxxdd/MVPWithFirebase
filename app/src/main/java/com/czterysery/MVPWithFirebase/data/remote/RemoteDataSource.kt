@@ -1,6 +1,5 @@
 package com.czterysery.MVPWithFirebase.data.remote
 
-import android.util.Log
 import com.czterysery.MVPWithFirebase.data.DataSource
 import com.czterysery.MVPWithFirebase.data.models.Content
 import com.czterysery.MVPWithFirebase.data.models.ContentInfo
@@ -23,7 +22,6 @@ class RemoteDataSource: DataSource() {
         //Get path to data according to selected tab
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref)
         val topics = ArrayList<Topic>()
-        Log.d(TAG, "Retrieving topics from the $ref")
         databaseRef.orderByChild("index").addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(data: DataSnapshot) {
@@ -34,8 +32,7 @@ class RemoteDataSource: DataSource() {
                 data.children.forEach {
                     val item = Topic(
                             it.child("name").value?.toString(),
-                            it.child("image").value?.toString(),
-                            it.child("count").value?.toString()
+                            it.child("image").value?.toString()
                             )
                     topics.add(item)
                 }
@@ -53,7 +50,6 @@ class RemoteDataSource: DataSource() {
     override fun getContent(ref: String, callback: GetContentCallback) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref).child("Issues")
         val contents = ArrayList<Content>()
-        Log.d(TAG, "Retrieving content from the $ref")
         databaseRef.orderByChild("index").addValueEventListener( object : ValueEventListener {
 
             //Content model represents entity in the database
@@ -74,7 +70,6 @@ class RemoteDataSource: DataSource() {
 
     override fun getContentInfo(ref: String, callback: GetContentInfoCallback) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref)
-        Log.d(TAG, "Retrieving content from the $ref")
         databaseRef.addValueEventListener( object : ValueEventListener {
 
             //Get only one object from the database that matches reference
@@ -95,7 +90,6 @@ class RemoteDataSource: DataSource() {
     override fun getDetails(ref: String, callback: GetDetailsCallback) {
         val databaseRef = FirebaseDatabase.getInstance().getReference(ref)
         val details = ArrayList<Detail>()
-        Log.d(TAG, "Retrieving details from the $ref")
         databaseRef.addValueEventListener( object : ValueEventListener {
 
             override fun onDataChange(data: DataSnapshot) {

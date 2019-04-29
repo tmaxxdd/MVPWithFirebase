@@ -5,11 +5,10 @@ import com.czterysery.MVPWithFirebase.data.models.ContentInfo
 import com.czterysery.MVPWithFirebase.data.models.Detail
 import com.czterysery.MVPWithFirebase.data.models.Topic
 
-/**
- * Created by tmax0 on 24.12.2017.
+/*
+    DataSource is a template for any class that
+    provides data.
  */
-
-//TODO Add comments
 abstract class DataSource {
 
     interface GetTopicsCallback {

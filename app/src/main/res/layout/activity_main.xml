@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="@dimen/card_headline_text_size"
+                    android:textSize="@dimen/headline_text_size"
                     app:font="@font/work_sans_bold"
                     style="@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_gravity="center"/>

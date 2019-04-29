@@ -1,14 +1,13 @@
 package com.czterysery.MVPWithFirebase.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import com.czterysery.MVPWithFirebase.DataType
-import com.czterysery.MVPWithFirebase.FragmentType
+import com.czterysery.MVPWithFirebase.util.constants.DataType
+import com.czterysery.MVPWithFirebase.util.constants.FragmentType
 import com.czterysery.MVPWithFirebase.R
 import com.czterysery.MVPWithFirebase.ui.topics.TopicsFragment
-import com.czterysery.MVPWithFirebase.util.FirebaseRefUtil
+import com.czterysery.MVPWithFirebase.util.constants.FirebaseRef
 
 /*
     This presenter is only responsible for adjusting bottom navigation.
@@ -41,10 +40,10 @@ class MainPresenter(private val mainView: MainActivity) : MainPresenterContract 
     override fun initNavCallback(bottomNav: AHBottomNavigation) {
         bottomNav.setOnTabSelectedListener { position, _ ->
             when(position) {
-                0 -> showTopicFragment(FirebaseRefUtil.rootLearn, FragmentType.TAG_TOPIC_LEARN)
-                1 -> showTopicFragment(FirebaseRefUtil.rootPlan, FragmentType.TAG_TOPIC_PLAN)
-                2 -> showTopicFragment(FirebaseRefUtil.rootWork, FragmentType.TAG_TOPIC_WORK)
-                else -> showTopicFragment(FirebaseRefUtil.rootLearn, FragmentType.TAG_TOPIC_LEARN)
+                0 -> showTopicFragment(FirebaseRef.rootLearn, FragmentType.TAG_TOPIC_LEARN)
+                1 -> showTopicFragment(FirebaseRef.rootPlan, FragmentType.TAG_TOPIC_PLAN)
+                2 -> showTopicFragment(FirebaseRef.rootWork, FragmentType.TAG_TOPIC_WORK)
+                else -> showTopicFragment(FirebaseRef.rootLearn, FragmentType.TAG_TOPIC_LEARN)
             }
         }
 
