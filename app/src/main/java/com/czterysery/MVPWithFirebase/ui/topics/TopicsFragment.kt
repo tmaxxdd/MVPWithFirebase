@@ -14,6 +14,7 @@ import com.czterysery.MVPWithFirebase.data.DataRepository
 import com.czterysery.MVPWithFirebase.data.local.LocalDataSource
 import com.czterysery.MVPWithFirebase.data.models.Topic
 import com.czterysery.MVPWithFirebase.data.remote.RemoteDataSource
+import com.czterysery.MVPWithFirebase.normalize
 import com.czterysery.MVPWithFirebase.ui.content.ContentFragment
 import com.czterysery.MVPWithFirebase.util.helpers.GsonHelper
 import com.czterysery.MVPWithFirebase.util.helpers.NetworkHelper
@@ -122,8 +123,8 @@ class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
 
     private fun showContentFragment(topicName: String) {
         val bundle = Bundle()
-        var ref= "$topicsRef/$topicName"
-        ref = MyNormalizer.normalize(ref)
+        //Remove polish chars
+        val ref= "$topicsRef/$topicName".normalize()
         Log.d(TAG, "After normalization: $ref")
         bundle.putString(DataType.BUNDLE_CONTENT, ref)
         fragmentInteractionListener.showFragment(

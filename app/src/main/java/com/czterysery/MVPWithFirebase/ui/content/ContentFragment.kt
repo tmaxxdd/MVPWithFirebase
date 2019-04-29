@@ -172,9 +172,8 @@ class ContentFragment: BaseFragment(), ContentContract.Fragment {
     //go to a detailed activity
     private fun showDetailsFragment(name: String?) {
         val bundle = Bundle()
-        //Replace polish characters from path
-        val ref = UnicodeFilter(false)
-                .filter("$contentName/Issues/$name/descriptions").toString()
+        //Remove polish chars
+        val ref = "$contentName/Issues/$name/descriptions".normalize()
         bundle.putString(DataType.BUNDLE_CONTENT, ref)
         fragmentInteractionListener.showFragment(
                 DetailsFragment::class.java,
