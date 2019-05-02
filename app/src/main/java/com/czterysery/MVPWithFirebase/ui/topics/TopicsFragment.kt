@@ -82,7 +82,7 @@ class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "$TAG detached")
+        Log.i(TAG, "$TAG detached")
     }
 
     override fun onResume() {
@@ -125,7 +125,6 @@ class TopicsFragment: BaseFragment(), TopicsContract.Fragment {
         val bundle = Bundle()
         //Remove polish chars
         val ref= "$topicsRef/$topicName".normalize()
-        Log.d(TAG, "After normalization: $ref")
         bundle.putString(DataType.BUNDLE_CONTENT, ref)
         fragmentInteractionListener.showFragment(
                 ContentFragment::class.java,

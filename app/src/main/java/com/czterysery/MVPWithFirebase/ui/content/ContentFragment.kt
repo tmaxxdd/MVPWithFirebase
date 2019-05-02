@@ -102,7 +102,7 @@ class ContentFragment: BaseFragment(), ContentContract.Fragment {
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "$TAG detached.")
+        Log.i(TAG, "$TAG detached.")
     }
 
     override fun onResume() {
