@@ -1,2 +1,2 @@
 # MVPWithFirebase
-![MVP banner](https://github.com/tmaxxdd/MVPWithFirebase/blob/master/mvp_banner.png)
+![MVP banner](https://github.com/tmaxxdd/MVPWithFirebase/blob/master/github_banner.png)
