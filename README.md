@@ -87,4 +87,17 @@ interface ContentContract {
 Here is more to do so interface must reflects view's options.
 
 ### Detail
+The most specific content is show at the end in DetailsFragment.
+<img src="https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_content.png" align="left" width="200">
+```kotlin
+interface DetailsContract {
 
+    interface Fragment : IBaseFragment {
+
+        fun showDetails(cards: ArrayList<Detail>)
+
+    }
+```
+This window shows no more than again list of cards.
+
+## Presenter
