@@ -98,6 +98,6 @@ interface DetailsContract {
 
     }
 ```
-This window shows no more than again list of cards. Although views are pretty simple, everything you have to do is adding elements in layout and defining functions for them in contract. This is a superpower of MVP!
+This window shows no more than again list of cards. Although views are pretty simple, you can easily add new elements. Just add components in xml and functions for them in contract. This is a superpower of MVP!
 
 ## Presenter
