@@ -41,5 +41,9 @@ class MainActivity : FOABaseActivity(), MainContract, BaseFragmentInteractionLis
 ### Structure
 App is designed to show data in three steps. Firstly it shows cards with general topics, nextly content page where user can choose the most detailed data.
 > TOPIC -> CONTENT -> DETAIL
+
+### Topic
+
+![topic_screenshot](https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_topic.png | height=600)
     
     
