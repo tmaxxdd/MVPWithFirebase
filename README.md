@@ -60,4 +60,6 @@ interface TopicsContract {
     }
     ...
 ```
-    
+> Contract is an interface which defines what methods given class must implements. You should declare contract for any class in your MVP.
+
+### Content
