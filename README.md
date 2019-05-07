@@ -6,6 +6,9 @@ MVP is one of the simplest approach for implementing app's architecture.
 MVP stands for M(Model) V(View) P(Presenter). 
 MVPWithFirebase also as name points is based on Firebase database by Google.
 
+In my opinion the best understanding of MVP concept gives Antonio Leiva and it is in Kotlin :smiley:
+https://antonioleiva.com/mvp-android/
+
 ## View
 Views are based on fragments. It means that is only **one registered Activity** and this is **MainActivity**.
 
@@ -63,3 +66,25 @@ interface TopicsContract {
 > Contract is an interface which defines what methods given class must implements. You should declare contract for any class in your MVP.
 
 ### Content
+More detailed view is represented by ContentFragment
+<img src="https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_content.png" align="left" width="200">
+```kotlin
+interface ContentContract {
+
+    // View
+    interface Fragment : IBaseFragment {
+
+        fun showImage(source: String)
+
+        fun showTitle(title: String)
+
+        fun showDescription(text: String)
+
+        fun showContent(contents: ArrayList<Content>)
+    }
+    ...
+```
+Here is more to do so interface must reflects view's options.
+
+### Detail
+
