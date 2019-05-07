@@ -43,7 +43,21 @@ App is designed to show data in three steps. Firstly it shows cards with general
 > TOPIC -> CONTENT -> DETAIL
 
 ### Topic
+Main view is represented by TopicsFragment
+<img src="https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_topic.png" align="left" width="200">
 
-![topic_screenshot](https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_topic.png | height=600)
-    
+#### Topic's contract
+This view only shows cards so it's contract is also very simple.
+```kotlin
+interface TopicsContract {
+
+    // View
+    interface Fragment : IBaseFragment {
+
+        // Show list of cards
+        fun showTopics(cards: ArrayList<Topic>)
+
+    }
+    ...
+```
     
