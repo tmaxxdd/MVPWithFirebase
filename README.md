@@ -88,7 +88,7 @@ Here is more to do so interface must reflects view's options.
 
 ### Detail
 The most specific content is show at the end in DetailsFragment.
-<img src="https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_content.png" align="left" width="200">
+<img src="https://github.com/tmaxxdd/MVPWithFirebase/blob/master/screenshot_detail.png" align="left" width="200">
 ```kotlin
 interface DetailsContract {
 
@@ -98,6 +98,6 @@ interface DetailsContract {
 
     }
 ```
-This window shows no more than again list of cards.
+This window shows no more than again list of cards. Although views are pretty simple, everything you have to do is adding elements in layout and defining functions for them in contract. This is a superpower of MVP!
 
 ## Presenter
