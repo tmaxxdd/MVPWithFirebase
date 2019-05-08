@@ -159,3 +159,33 @@ abstract class BasePresenter<ViewT>: IBasePresenter<ViewT> {
 Generally model refers to a single immutable data class. In MVP we name as model everything that is related to a data in any case. Classical model approach: http://www.javapractices.com/topic/TopicAction.do?Id=187.
 ### DataRepository
 The main source of 
+```kotlin
+class DataRepository(private val remoteDataSource: DataSource,
+                     private val localDataSource: DataSource,
+                     private val networkHelper: NetworkHelper) {
+    private val TAG = javaClass.simpleName
+
+    fun getTopics(ref: String, callback: DataSource.GetTopicsCallback) {
+        if (networkHelper.isNetworkAvailable()) {
+            //Internet connection available
+            remoteDataSource.getTopics(ref, object : DataSource.GetTopicsCallback {
+
+                override fun onSuccess(topics: ArrayList<Topic>) {
+                    callback.onSuccess(topics)
+                    (localDataSource as LocalDataSource).storeData(ref, topics)
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    callback.onFailure(throwable)
+                }
+
+                override fun onNetworkFailure() {
+                    callback.onNetworkFailure()
+                }
+            })
+        } else {
+            localDataSource.getTopics(ref, callback)
+        }
+    }
+    ...
+```
