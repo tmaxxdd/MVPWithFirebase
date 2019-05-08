@@ -6,6 +6,8 @@ MVP is one of the simplest approach for implementing app's architecture.
 MVP stands for M(Model) V(View) P(Presenter). 
 MVPWithFirebase also as name points is based on Firebase database by Google.
 
+<a href=""><img width="200" src="https://github.com/steverichey/google-play-badge-svg/blob/master/img/en_get.svg"></a>
+
 In my opinion the best understanding of MVP concept gives Antonio Leiva and it is in Kotlin :smiley:
 https://antonioleiva.com/mvp-android/
 
@@ -158,7 +160,7 @@ abstract class BasePresenter<ViewT>: IBasePresenter<ViewT> {
 ## Model
 Generally model refers to a single immutable data class. In MVP we name as model everything that is related to a data in any case. Classical model approach: http://www.javapractices.com/topic/TopicAction.do?Id=187.
 ### DataRepository
-The main source of 
+DataRepository is the main source of data. Depending on a internet connection it choose local or remote database.
 ```kotlin
 class DataRepository(private val remoteDataSource: DataSource,
                      private val localDataSource: DataSource,
@@ -189,3 +191,12 @@ class DataRepository(private val remoteDataSource: DataSource,
     }
     ...
 ```
+## Sources and contribution
+
+### Links
+[Fragment Oriented Applications](https://vinsol.com/blog/2014/09/15/advocating-fragment-oriented-applications-in-android/)
+[MVP for Android](https://antonioleiva.com/mvp-android/)
+[Mindorks MVP](https://github.com/MindorksOpenSource/android-mvp-architecture)
+[Diagonal Layout](https://github.com/florent37/DiagonalLayout)
+
+I don't plan any future work and contribution on this project. So feel free to do it on your own :smiley:
