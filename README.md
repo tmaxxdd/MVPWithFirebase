@@ -101,3 +101,57 @@ interface DetailsContract {
 This window shows no more than again list of cards. Although views are pretty simple, you can easily add new elements. Just add components in xml and functions for them in contract. This is a superpower of MVP!
 
 ## Presenter
+Presenter is a bridge between view and data source. It is also a manager which reacts on lifecycle.
+```kotlin
+class ContentPresenter(private val dataRepository: DataRepository):
+        BasePresenter<ContentContract.Fragment>(), ContentContract.Presenter  {
+    private val TAG = javaClass.simpleName
+
+    override fun getContent(ref: String) {
+
+        //Show loading
+        view?.setProgressBar(true)
+
+        dataRepository.getContent(ref, object : DataSource.GetContentCallback {
+
+            override fun onSuccess(contents: ArrayList<Content>) {
+                view?.let {
+                    it.showContent(contents)
+                    it.setProgressBar(false)
+                }
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to retrieve data")
+                }
+            }
+
+            override fun onNetworkFailure() {
+                view?.let{
+                    it.setProgressBar(false)
+                    it.showToast("App wasn't able to connect to the internet")
+                }
+            }
+
+        })
+    }
+```
+Presenter gets access to a view object from BasePresenter which manages view's state. Access is provided thanks to variable inheritance.
+
+```kotlin
+abstract class BasePresenter<ViewT>: IBasePresenter<ViewT> {
+
+    protected var view: ViewT? = null
+
+    override fun onViewActive(view: ViewT) {
+        this.view = view
+    }
+
+    override fun onViewInactive() {
+        view = null
+    }
+
+}
+```
