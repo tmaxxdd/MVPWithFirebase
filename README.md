@@ -155,3 +155,7 @@ abstract class BasePresenter<ViewT>: IBasePresenter<ViewT> {
 
 }
 ```
+## Model
+Generally model refers to a single immutable data class. In MVP we name as model everything that is related to a data in any case. Classical model approach: http://www.javapractices.com/topic/TopicAction.do?Id=187.
+### DataRepository
+The main source of 
