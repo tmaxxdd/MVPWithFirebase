@@ -32,7 +32,8 @@ class RemoteDataSource: DataSource() {
                 data.children.forEach {
                     val item = Topic(
                             it.child("name").value?.toString(),
-                            it.child("image").value?.toString()
+                            it.child("image").value?.toString(),
+                            it.child("description").value?.toString()
                             )
                     topics.add(item)
                 }

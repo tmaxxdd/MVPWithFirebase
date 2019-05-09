@@ -30,6 +30,7 @@ class TopicsRecyclerAdapter(private val topics: ArrayList<Topic>, private val li
         fun bind(item: Topic, listener: (Topic) -> Unit) = with(itemView) {
             item.name?.let { topic_name.text = it }
             item.image?.let { topic_image.loadUrl(it) } //From extension function
+            item.description?.let { topic_desc.text = it }
             setOnClickListener { listener(item) }
         }
     }
