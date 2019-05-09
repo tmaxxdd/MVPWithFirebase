@@ -6,7 +6,7 @@ MVP is one of the simplest approach for implementing app's architecture.
 MVP stands for M(Model) V(View) P(Presenter). 
 MVPWithFirebase also as name points is based on Firebase database by Google.
 
-<a href=""><img width="200" src="https://github.com/steverichey/google-play-badge-svg/blob/master/img/en_get.svg"></a>
+<a href="https://play.google.com/store/apps/details?id=com.czterysery.MVPWithFirebase"><img width="200" src="https://github.com/steverichey/google-play-badge-svg/blob/master/img/en_get.svg"></a>
 
 In my opinion the best understanding of MVP concept gives Antonio Leiva and it is in Kotlin :smiley:
 https://antonioleiva.com/mvp-android/
