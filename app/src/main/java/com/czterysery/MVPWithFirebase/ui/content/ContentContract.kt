@@ -5,8 +5,8 @@ import com.czterysery.MVPWithFirebase.util.mvp.IBaseFragment
 import com.czterysery.MVPWithFirebase.util.mvp.IBasePresenter
 
 /*
-    This interface provide functions that
-    ContentPresenter must implements.
+    This interface provides the functions that
+    ContentPresenter musts implements.
  */
 interface ContentContract {
 
